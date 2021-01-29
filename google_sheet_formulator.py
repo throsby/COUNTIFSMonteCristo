@@ -2,7 +2,9 @@ import pandas as pd
 import os
 
 start = "4"
-end = "262"
+end = "306"
+add_start = "335"
+add_end = "355"
 york = "York"
 wash = "Washington"
 set = "Set"
@@ -28,7 +30,50 @@ d = {   'col0':["","Set","Washington","York"],
                     '=COUNTIFS($C${start}:$C${end}, "<>y", $K${start}:$K${end}, "{location}")'.format(start=start,end=end,location=york) ]
     }
 
-frame = pd.DataFrame(data=d)
+# Including additionals column
+d2 = {  'col0':["","Set","Washington","York"],
+        'col1':[    "PCRs Left Done",
+                    '=COUNTIFS($C${start}:$C${end}, "y", $K${start}:$K${end}, "{location}", $L${start}:$L${end},"PCR") + COUNTIFS($C${add_start}:$C${add_end}, "y", $K${add_start}:$K${add_end}, "{location}", $L${add_start}:$L${add_end},"PCR")'.format(start=start,end=end,add_start=add_start,add_end=add_end,location=set),
+                    '=COUNTIFS($C${start}:$C${end}, "y", $K${start}:$K${end}, "{location}", $L${start}:$L${end},"PCR") + COUNTIFS($C${add_start}:$C${add_end}, "y", $K${add_start}:$K${add_end}, "{location}", $L${add_start}:$L${add_end},"PCR")'.format(start=start,end=end,add_start=add_start,add_end=add_end,location=wash),
+                    '=COUNTIFS($C${start}:$C${end}, "y", $K${start}:$K${end}, "{location}", $L${start}:$L${end},"PCR") + COUNTIFS($C${add_start}:$C${add_end}, "y", $K${add_start}:$K${add_end}, "{location}", $L${add_start}:$L${add_end},"PCR")'.format(start=start,end=end,add_start=add_start,add_end=add_end,location=york)],
+        'col2':[    "PCR + Rs Done",
+                    '=COUNTIFS($C${start}:$C${end}, "y", $K${start}:$K${end}, "{location}", $L${start}:$L${end},"PCR + R") + COUNTIFS($C${add_start}:$C${add_end}, "y", $K${add_start}:$K${add_end}, "{location}", $L${add_start}:$L${add_end},"PCR + R")'.format(start=start,end=end,add_start=add_start,add_end=add_end,location=set),
+                    '=COUNTIFS($C${start}:$C${end}, "y", $K${start}:$K${end}, "{location}", $L${start}:$L${end},"PCR + R") + COUNTIFS($C${add_start}:$C${add_end}, "y", $K${add_start}:$K${add_end}, "{location}", $L${add_start}:$L${add_end},"PCR + R")'.format(start=start,end=end,add_start=add_start,add_end=add_end,location=wash),
+                    '=COUNTIFS($C${start}:$C${end}, "y", $K${start}:$K${end}, "{location}", $L${start}:$L${end},"PCR + R") + COUNTIFS($C${add_start}:$C${add_end}, "y", $K${add_start}:$K${add_end}, "{location}", $L${add_start}:$L${add_end},"PCR + R")'.format(start=start,end=end,add_start=add_start,add_end=add_end,location=york)],
+        'col3':[    "Rapids Done",
+                    '=COUNTIFS($C${start}:$C${end}, "y", $K${start}:$K${end}, "{location}", $L${start}:$L${end},"Rapid") + COUNTIFS($C${add_start}:$C${add_end}, "y", $K${add_start}:$K${add_end}, "{location}", $L${add_start}:$L${add_end},"Rapid")'.format(start=start,end=end,add_start=add_start,add_end=add_end,location=set),
+                    '=COUNTIFS($C${start}:$C${end}, "y", $K${start}:$K${end}, "{location}", $L${start}:$L${end},"Rapid") + COUNTIFS($C${add_start}:$C${add_end}, "y", $K${add_start}:$K${add_end}, "{location}", $L${add_start}:$L${add_end},"Rapid")'.format(start=start,end=end,add_start=add_start,add_end=add_end,location=wash),
+                    '=COUNTIFS($C${start}:$C${end}, "y", $K${start}:$K${end}, "{location}", $L${start}:$L${end},"Rapid") + COUNTIFS($C${add_start}:$C${add_end}, "y", $K${add_start}:$K${add_end}, "{location}", $L${add_start}:$L${add_end},"Rapid")'.format(start=start,end=end,add_start=add_start,add_end=add_end,location=york)],
+        'col4':[    "Total Tests Done",
+                    '=COUNTIFS($C${start}:$C${end}, "y", $K${start}:$K${end}, "{location}") + COUNTIFS($C${add_start}:$C${add_end}, "y", $K${add_start}:$K${add_end}, "{location}")'.format(start=start,end=end,add_start=add_start,add_end=add_end,location=set),
+                    '=COUNTIFS($C${start}:$C${end}, "y", $K${start}:$K${end}, "{location}") + COUNTIFS($C${add_start}:$C${add_end}, "y", $K${add_start}:$K${add_end}, "{location}")'.format(start=start,end=end,add_start=add_start,add_end=add_end,location=wash),
+                    '=COUNTIFS($C${start}:$C${end}, "y", $K${start}:$K${end}, "{location}") + COUNTIFS($C${add_start}:$C${add_end}, "y", $K${add_start}:$K${add_end}, "{location}")'.format(start=start,end=end,add_start=add_start,add_end=add_end,location=york)]
+    }
+
+d3 = {  'col0':["","","Set","Washington","York"],
+        'col1':[    "PCRs Left Done",
+                    '',
+                    '=COUNTIFS($C${start}:$C${end}, "y", $K${start}:$K${end}, "{location}", $L${start}:$L${end},"PCR") + COUNTIFS($C${add_start}:$C${add_end}, "y", $K${add_start}:$K${add_end}, "{location}", $L${add_start}:$L${add_end},"PCR")'.format(start=start,end=end,add_start=add_start,add_end=add_end,location=set),
+                    '=COUNTIFS($C${start}:$C${end}, "y", $K${start}:$K${end}, "{location}", $L${start}:$L${end},"PCR") + COUNTIFS($C${add_start}:$C${add_end}, "y", $K${add_start}:$K${add_end}, "{location}", $L${add_start}:$L${add_end},"PCR")'.format(start=start,end=end,add_start=add_start,add_end=add_end,location=wash),
+                    '=COUNTIFS($C${start}:$C${end}, "y", $K${start}:$K${end}, "{location}", $L${start}:$L${end},"PCR") + COUNTIFS($C${add_start}:$C${add_end}, "y", $K${add_start}:$K${add_end}, "{location}", $L${add_start}:$L${add_end},"PCR")'.format(start=start,end=end,add_start=add_start,add_end=add_end,location=york)],
+        'col2':[    "PCR + Rs Done",
+                    '',
+                    '=COUNTIFS($C${start}:$C${end}, "y", $K${start}:$K${end}, "{location}", $L${start}:$L${end},"PCR + R") + COUNTIFS($C${add_start}:$C${add_end}, "y", $K${add_start}:$K${add_end}, "{location}", $L${add_start}:$L${add_end},"PCR + R")'.format(start=start,end=end,add_start=add_start,add_end=add_end,location=set),
+                    '=COUNTIFS($C${start}:$C${end}, "y", $K${start}:$K${end}, "{location}", $L${start}:$L${end},"PCR + R") + COUNTIFS($C${add_start}:$C${add_end}, "y", $K${add_start}:$K${add_end}, "{location}", $L${add_start}:$L${add_end},"PCR + R")'.format(start=start,end=end,add_start=add_start,add_end=add_end,location=wash),
+                    '=COUNTIFS($C${start}:$C${end}, "y", $K${start}:$K${end}, "{location}", $L${start}:$L${end},"PCR + R") + COUNTIFS($C${add_start}:$C${add_end}, "y", $K${add_start}:$K${add_end}, "{location}", $L${add_start}:$L${add_end},"PCR + R")'.format(start=start,end=end,add_start=add_start,add_end=add_end,location=york)],
+        'col3':[    "Rapids Done",
+                    '',
+                    '=COUNTIFS($C${start}:$C${end}, "y", $K${start}:$K${end}, "{location}", $L${start}:$L${end},"Rapid") + COUNTIFS($C${add_start}:$C${add_end}, "y", $K${add_start}:$K${add_end}, "{location}", $L${add_start}:$L${add_end},"Rapid")'.format(start=start,end=end,add_start=add_start,add_end=add_end,location=set),
+                    '=COUNTIFS($C${start}:$C${end}, "y", $K${start}:$K${end}, "{location}", $L${start}:$L${end},"Rapid") + COUNTIFS($C${add_start}:$C${add_end}, "y", $K${add_start}:$K${add_end}, "{location}", $L${add_start}:$L${add_end},"Rapid")'.format(start=start,end=end,add_start=add_start,add_end=add_end,location=wash),
+                    '=COUNTIFS($C${start}:$C${end}, "y", $K${start}:$K${end}, "{location}", $L${start}:$L${end},"Rapid") + COUNTIFS($C${add_start}:$C${add_end}, "y", $K${add_start}:$K${add_end}, "{location}", $L${add_start}:$L${add_end},"Rapid")'.format(start=start,end=end,add_start=add_start,add_end=add_end,location=york)],
+        'col4':[    "Total Tests Done",
+                    '',
+                    '=COUNTIFS($C${start}:$C${end}, "y", $K${start}:$K${end}, "{location}") + COUNTIFS($C${add_start}:$C${add_end}, "y", $K${add_start}:$K${add_end}, "{location}")'.format(start=start,end=end,add_start=add_start,add_end=add_end,location=set),
+                    '=COUNTIFS($C${start}:$C${end}, "y", $K${start}:$K${end}, "{location}") + COUNTIFS($C${add_start}:$C${add_end}, "y", $K${add_start}:$K${add_end}, "{location}")'.format(start=start,end=end,add_start=add_start,add_end=add_end,location=wash),
+                    '=COUNTIFS($C${start}:$C${end}, "y", $K${start}:$K${end}, "{location}") + COUNTIFS($C${add_start}:$C${add_end}, "y", $K${add_start}:$K${add_end}, "{location}")'.format(start=start,end=end,add_start=add_start,add_end=add_end,location=york)]
+    }
+
+frame = pd.DataFrame(data=d2)
 
 print(frame)
-frame.to_csv("googlesheetformulas.csv")
+frame.to_csv("./googlesheetformulas.csv")
